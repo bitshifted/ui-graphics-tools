@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+{{- $BackgroundFill := or  .BackgroundFill "#FFFFFF"}}
+{{- $HasSubheading := gt (len .Subheading ) 0 -}}
+{{- $HasCopyright := gt (len .Copyright) 0 -}}
+<svg width="600px" height="400px" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <rect x="0" y="0" width="600" height="400" fill="{{ $BackgroundFill }}" stroke="black"/>
+    <text font-size="60" textLength="500" x="30" y="94.3" fill="rgb(200, 200, 200)">
+        {{ .Title }}
+    </text>
+    {{- if $HasSubheading -}}
+    <text  font-size="30" x="30" y="140" fill="rgb(99, 204, 204)" >
+        {{ .Subheading }}
+    </text>
+    {{- end -}}
+    {{- if $HasCopyright -}}
+    <text  font-size="15" x="30" y="360" fill="rgb(0, 0, 0)" >
+        Copyright &#169; {{ .Copyright }}
+    </text>
+    {{- end -}}
+</svg>
