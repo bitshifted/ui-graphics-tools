@@ -3,7 +3,6 @@ package commands
 import (
 	_ "embed"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -50,14 +49,17 @@ func GenerateSplashScreen(params *SplashParams) error {
 	if err != nil {
 		return err
 	}
-	tmpFile, err := ioutil.TempFile("", "splash")
+	tmpFile, err := os.CreateTemp("", "splash")
 	if err != nil {
 		return err
 	}
 	defer os.Remove(tmpFile.Name())
 	err = tmpl.Execute(tmpFile, templateData)
+	if err != nil {
+		return err
+	}
 	outFilepath := path.Join(params.OutputDir, params.OutFileName)
-	os.MkdirAll(params.OutputDir, os.ModePerm)
+	err = os.MkdirAll(params.OutputDir, os.ModePerm)
 	if err != nil {
 		return err
 	}
