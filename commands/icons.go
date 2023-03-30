@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	inkscapeCmd  = "inkscape"
+	inkscapeCmd  = "rsvg-convert"
 	convertCmd   = "convert"
 	pngIcnsCmd   = "png2icns"
 	pngExtension = ".png"
