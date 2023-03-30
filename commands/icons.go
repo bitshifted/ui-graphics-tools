@@ -156,7 +156,8 @@ func generateIco(params *IconsParams, outputDir string) error {
 	}
 	pngFiles := getAllPngFilesInDir(outputDir, false)
 	icoFile := path.Join(outputDir, params.getInputFileBaseName()+".ico")
-	convertArgs := append(pngFiles, icoFile)
+	convertArgs := pngFiles
+	convertArgs = append(convertArgs, icoFile)
 	convert := exec.Command(convertCmd, convertArgs...)
 	out, err := convert.CombinedOutput()
 	if err != nil {
@@ -191,7 +192,7 @@ func generateIcns(params *IconsParams, outputDir string) error {
 
 func getAllPngFilesInDir(directory string, isIcns bool) []string {
 	var pngFiles []string
-	filepath.WalkDir(directory, func(s string, d fs.DirEntry, e error) error {
+	err := filepath.WalkDir(directory, func(s string, d fs.DirEntry, e error) error {
 		if e != nil {
 			return e
 		}
@@ -202,5 +203,8 @@ func getAllPngFilesInDir(directory string, isIcns bool) []string {
 		}
 		return nil
 	})
+	if err != nil {
+		fmt.Println("Failed to get PNG files")
+	}
 	return pngFiles
 }

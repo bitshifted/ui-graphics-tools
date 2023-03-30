@@ -65,5 +65,4 @@ func Run() error {
 		fmt.Println("Unknown command")
 		return nil
 	}
-
 }
