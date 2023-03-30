@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_IconsGenerateSuccess(t *testing.T) {
+func TestIconsGenerateSuccess(t *testing.T) {
 	execCommand = fakeExecCommand
 	defer func() { execCommand = exec.Command }()
 	outputDir, err := os.MkdirTemp("", "splash-test")

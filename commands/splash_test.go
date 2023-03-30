@@ -16,7 +16,7 @@ func fakeExecCommand(command string, args ...string) *exec.Cmd {
 	return cmd
 }
 
-func Test_SplashScreenGenerateSuccess(t *testing.T) {
+func TestSplashScreenGenerateSuccess(t *testing.T) {
 	execCommand = fakeExecCommand
 	defer func() { execCommand = exec.Command }()
 	outputDir, err := os.MkdirTemp("", "splash-test")
