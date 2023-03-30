@@ -19,7 +19,7 @@ var (
 	verbose = kingpin.Flag("verbose", "Verbose mode").Short('v').Bool()
 
 	iconsCmd    = app.Command("icons", "Generates OS specific icons from SVG")
-	inputFile   = iconsCmd.Flag("input-file", "Input file in SVG format").Required().String()
+	inputFile   = iconsCmd.Arg("input-file", "Input file in SVG format").Required().String()
 	outputDir   = iconsCmd.Flag("output-dir", "Directory containing generated icons").Default(defaultIconsOutputDir).String()
 	size16x16   = iconsCmd.Flag("16x16", "Generate 16x16 pixels PNG icon").Default("true").Bool()
 	size32x32   = iconsCmd.Flag("32x32", "Generate 32x32 pixels PNG icon").Default("true").Bool()
