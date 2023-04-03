@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Setup GO
+      - name: Setup Go
         uses: actions/setup-go@v4
         with: 
           go-version: '1.20'
