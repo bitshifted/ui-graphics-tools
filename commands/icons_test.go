@@ -11,7 +11,7 @@ import (
 func TestIconsGenerateSuccess(t *testing.T) {
 	execCommand = fakeExecCommand
 	defer func() { execCommand = exec.Command }()
-	outputDir, err := os.MkdirTemp("", "splash-test")
+	outputDir, err := os.MkdirTemp("", "icons-test")
 	assert.NoError(t, err)
 	defer os.Remove(outputDir)
 	params := IconsParams{

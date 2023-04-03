@@ -5,14 +5,13 @@ import (
 	"io/fs"
 	"log"
 	"os"
-	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
 )
 
 const (
-	inkscapeCmd  = "rsvg-convert"
+	svgConvert   = "rsvg-convert"
 	convertCmd   = "convert"
 	pngIcnsCmd   = "png2icns"
 	pngExtension = ".png"
@@ -136,10 +135,10 @@ func generatePngIcons(params *IconsParams, inputFilePath, outDir string) error {
 		width := fmt.Sprintf("%d", res.width)
 		height := fmt.Sprintf("%d", res.height)
 		outFile := params.pngOutputFile(outDir, res.label)
-		inkscape := exec.Command(inkscapeCmd, "-w", width, "-h", height, "-o", outFile, inputFilePath)
-		out, err := inkscape.CombinedOutput()
+		svgConvert := execCommand(svgConvert, "-w", width, "-h", height, "-o", outFile, inputFilePath)
+		out, err := svgConvert.CombinedOutput()
 		if err != nil {
-			log.Printf("Failed to run inkscape: %s\n", err)
+			log.Printf("Failed to run rsvg-convert: %s\n", err)
 			return err
 		}
 		if params.Verbose {
@@ -158,7 +157,7 @@ func generateIco(params *IconsParams, outputDir string) error {
 	icoFile := path.Join(outputDir, params.getInputFileBaseName()+".ico")
 	convertArgs := pngFiles
 	convertArgs = append(convertArgs, icoFile)
-	convert := exec.Command(convertCmd, convertArgs...)
+	convert := execCommand(convertCmd, convertArgs...)
 	out, err := convert.CombinedOutput()
 	if err != nil {
 		return err
@@ -178,7 +177,7 @@ func generateIcns(params *IconsParams, outputDir string) error {
 	icnsFile := path.Join(outputDir, params.getInputFileBaseName()+".icns")
 	args := []string{icnsFile}
 	args = append(args, pngFiles...)
-	png2icns := exec.Command(pngIcnsCmd, args...)
+	png2icns := execCommand(pngIcnsCmd, args...)
 	out, err := png2icns.CombinedOutput()
 	if err != nil {
 		log.Printf("Failed to run png2icns: %s\n", err)
