@@ -63,10 +63,10 @@ func GenerateSplashScreen(params *SplashParams) error {
 	if err != nil {
 		return err
 	}
-	inkscape := execCommand(inkscapeCmd, "-w", defaultWidth, "-h", defaultHeight, "-o", outFilepath, tmpFile.Name())
-	out, err := inkscape.CombinedOutput()
+	svgConvert := execCommand(svgConvert, "-w", defaultWidth, "-h", defaultHeight, "-o", outFilepath, tmpFile.Name())
+	out, err := svgConvert.CombinedOutput()
 	if err != nil {
-		log.Printf("Failed to run inkscape: %s\n", err)
+		log.Printf("Failed to run rsvg-convert: %s\n", err)
 		return err
 	}
 	if params.Verbose {
