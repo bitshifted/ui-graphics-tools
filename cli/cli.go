@@ -16,7 +16,7 @@ const (
 
 var (
 	app     = kingpin.New("ui-graphics-tools", "Tools for UI graphics generation")
-	verbose = kingpin.Flag("verbose", "Verbose mode").Short('v').Bool()
+	verbose = app.Flag("verbose", "Verbose mode").Short('v').Bool()
 
 	iconsCmd    = app.Command("icons", "Generates OS specific icons from SVG")
 	inputFile   = iconsCmd.Arg("input-file", "Input file in SVG format").Required().String()

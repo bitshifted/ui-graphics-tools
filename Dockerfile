@@ -8,3 +8,4 @@ ARG binary_location=target/ui-graphics-tools
 COPY ${binary_location} /usr/bin
 
 WORKDIR /workspace
+ENTRYPOINT [ "ui-graphics-tools" ]
