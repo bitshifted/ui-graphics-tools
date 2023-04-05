@@ -7,6 +7,7 @@ import (
 	"os"
 	"path"
 	"text/template"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -29,21 +30,28 @@ type SplashParams struct {
 }
 
 type SplashTemplateData struct {
-	Title          string `yaml:"title"`
-	Subheading     string `yaml:"subheading"`
-	Copyright      string `yaml:"copyright"`
-	BackgroundFill string `yaml:"background-fill"`
+	BorderColor     string `yaml:"splash-border-color"`
+	Title           string `yaml:"title"`
+	TitleColor      string `yaml:"title-color"`
+	Subheading      string `yaml:"subheading"`
+	SubheadingColor string `yaml:"subheading-color"`
+	BackgroundFill  string `yaml:"background-fill"`
+	Copyright       string `yaml:"copyright"`
+	CopyrightYear   int    `yaml:"copyright-year"`
 }
 
 func GenerateSplashScreen(params *SplashParams) error {
-	yamlConten, err := os.ReadFile(params.ConfigFile)
+	yamlContent, err := os.ReadFile(params.ConfigFile)
 	if err != nil {
 		return err
 	}
 	templateData := SplashTemplateData{}
-	err = yaml.Unmarshal(yamlConten, &templateData)
+	err = yaml.Unmarshal(yamlContent, &templateData)
 	if err != nil {
 		return err
+	}
+	if templateData.CopyrightYear == 0 {
+		templateData.CopyrightYear = time.Now().Year()
 	}
 	tmpl, err := template.New("splash-template").Parse(splashTemplate)
 	if err != nil {
@@ -54,6 +62,7 @@ func GenerateSplashScreen(params *SplashParams) error {
 		return err
 	}
 	defer os.Remove(tmpFile.Name())
+	fmt.Printf("temp file: %s\n", tmpFile.Name())
 	err = tmpl.Execute(tmpFile, templateData)
 	if err != nil {
 		return err

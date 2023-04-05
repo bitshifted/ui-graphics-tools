@@ -1,4 +1,7 @@
 title: Test Application 2.0
+title-color: "#00AABB"
 subheading: This is test subheading
+subheading-color: rgb(100,120,130)
 copyright: copyright holder
-background-fill: rgb(100,200,250)
+background-fill: rgb(200,200,150)
+splash-border-color: "red"
