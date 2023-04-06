@@ -6,7 +6,8 @@ RUN mkdir /workspace
 ARG binary_location=target/ui-graphics-tools
 
 COPY ${binary_location} /usr/bin
-RUN chmod 755 /usr/bin/ui-graphics-tools
+COPY ./scripts/launcher.sh /usr/bin/launcher
+RUN chmod 755 /usr/bin/ui-graphics-tools && chmod 755 /usr/bin/launcher
 
 WORKDIR /workspace
-ENTRYPOINT [ "ui-graphics-tools" ]
+ENTRYPOINT [ "/usr/bin/launcher" ]
