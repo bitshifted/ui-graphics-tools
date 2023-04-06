@@ -62,7 +62,6 @@ func GenerateSplashScreen(params *SplashParams) error {
 		return err
 	}
 	defer os.Remove(tmpFile.Name())
-	fmt.Printf("temp file: %s\n", tmpFile.Name())
 	err = tmpl.Execute(tmpFile, templateData)
 	if err != nil {
 		return err
