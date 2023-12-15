@@ -54,7 +54,8 @@ jobs:
           push: true
           context: .
           build-args: |
-            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') BUILD_VERSION=${{ steps.calculate-version.outputs.version-string }} \
+            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') 
+            BUILD_VERSION=${{ steps.calculate-version.outputs.version-string }}
             VCS_REF=$GITHUB_SHA
           tags: ghcr.io/bitshifted/ui-graphics-tools:${{ steps.calculate-version.outputs.version-string }}
       - name: Tag version
