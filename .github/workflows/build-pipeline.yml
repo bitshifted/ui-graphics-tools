@@ -48,15 +48,20 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build timestamp
+        id: docker-build-timestamp
+        run: |
+          TIMESTAMP=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          echo "ts_value=$TIMESTAMP" >> $GITHUB_OUTPUT
       - name: Build Docker image
         uses: docker/build-push-action@v3
         with:
           push: true
           context: .
           build-args: |
-            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') 
+            BUILD_DATE=${{ steps.docker-build-timestamp.outputs.ts_value }}
             BUILD_VERSION=${{ steps.calculate-version.outputs.version-string }}
-            VCS_REF=$GITHUB_SHA
+            VCS_REF=${{ github.sha }}
           tags: ghcr.io/bitshifted/ui-graphics-tools:${{ steps.calculate-version.outputs.version-string }}
       - name: Tag version
         run: |
