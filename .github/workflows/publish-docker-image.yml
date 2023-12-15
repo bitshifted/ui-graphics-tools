@@ -1,5 +1,7 @@
 name: Publish Docker Image
 on:
+  pull_request:
+    branches: [ main ]
   push:
     branches: [ main ]
 jobs:
@@ -16,11 +18,13 @@ jobs:
         run: |
           make build
       - name: Upload binary
+        if: ${{ github.event_name == 'push' }}
         uses: actions/upload-artifact@v3
         with:
           name: tools-binary
           path: target/ui-graphics-tools
   publish-docker-image:
+    if:  ${{ github.event_name == 'push' }}
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
@@ -32,10 +36,8 @@ jobs:
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
       - name: Calculate version
-        run: |
-          VERSION=$(./cicd/version.sh)
-          echo "Version: $VERSION"
-          echo  "TAG_NAME=$VERSION" >> $GITHUB_ENV
+        id: calculate-version
+        uses: bitshifted/git-auto-semver@v1
       - name: Download binary artifact
         uses: actions/download-artifact@v3
         with:
@@ -54,9 +56,9 @@ jobs:
         with:
           push: true
           context: .
-          tags: ghcr.io/bitshifted/ui-graphics-tools:${{ env.TAG_NAME }}
+          tags: ghcr.io/bitshifted/ui-graphics-tools:${{ steps.calculate-version.outputs.version-string }}
       - name: Tag version
         run: |
-          git tag  v${{ env.TAG_NAME }}
+          git tag  v${{ steps.calculate-version.outputs.version-string }}
           git push origin --tags
        
